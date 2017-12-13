@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MVVP With Dagger 2, RxJava, Room, retrofit 2</string>
+    <string name="action_settings">Settings</string>
+</resources>
