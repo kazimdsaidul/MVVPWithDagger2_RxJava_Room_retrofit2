@@ -1,10 +1,12 @@
-package com.saidul.mvvpwithdagger2rxjavaroomretrofit2;
+package com.saidul.mvvpwithdagger2rxjavaroomretrofit2.ui.mainView;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.R;
 
 /**
  * A placeholder fragment containing a simple view.
