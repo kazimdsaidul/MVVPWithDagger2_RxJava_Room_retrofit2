@@ -19,7 +19,9 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 
+import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.repo.MainRepository;
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.di.ActivityContext;
+import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.ui.mainView.MainModelFactory;
 
 import dagger.Module;
 import dagger.Provides;
@@ -47,6 +49,21 @@ public class ActivityModule {
     AppCompatActivity provideActivity() {
         return mActivity;
     }
+
+
+    @Provides
+    @ActivityContext
+    MainRepository provoideMainRepository(){
+        return new MainRepository();
+    }
+
+    @Provides
+    @ActivityContext
+    MainModelFactory provoiderMainModelFactory(MainRepository mainRepository){
+        return new MainModelFactory(mainRepository);
+    }
+
+
 
 
 
