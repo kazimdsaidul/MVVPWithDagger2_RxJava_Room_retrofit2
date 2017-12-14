@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.saidul.mvvpwithdagger2rxjavaroomretrofit2">
 
+    <uses-permission android:name="android.permission.INTERNET">
+    </uses-permission>
+
     <application
         android:name=".application.AppController"
         android:allowBackup="true"

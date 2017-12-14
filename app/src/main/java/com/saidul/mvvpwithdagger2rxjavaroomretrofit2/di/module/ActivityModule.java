@@ -19,12 +19,13 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 
-import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.repo.MainRepository;
+import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.repo.RepositoryManager;
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.di.ActivityContext;
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.ui.mainView.MainModelFactory;
 
 import dagger.Module;
 import dagger.Provides;
+import retrofit2.Retrofit;
 
 /**
  * Created by janisharali on 27/01/17.
@@ -53,14 +54,14 @@ public class ActivityModule {
 
     @Provides
     @ActivityContext
-    MainRepository provoideMainRepository(){
-        return new MainRepository();
+    RepositoryManager provoideMainRepository(Retrofit retrofit){
+        return new RepositoryManager(retrofit);
     }
 
     @Provides
     @ActivityContext
-    MainModelFactory provoiderMainModelFactory(MainRepository mainRepository){
-        return new MainModelFactory(mainRepository);
+    MainModelFactory provoiderMainModelFactory(RepositoryManager repositoryManager){
+        return new MainModelFactory(repositoryManager);
     }
 
 

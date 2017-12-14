@@ -1,6 +1,7 @@
 package com.saidul.mvvpwithdagger2rxjavaroomretrofit2.ui.mainView;
 
 import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,9 +10,12 @@ import android.util.Log;
 import android.view.View;
 
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.R;
+import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.apiServices.model.APIResponse;
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.base.BaseActivity;
 
 import javax.inject.Inject;
+
+import io.reactivex.annotations.Nullable;
 
 public class MainActivity extends BaseActivity implements LifecycleOwner {
 
@@ -33,9 +37,23 @@ public class MainActivity extends BaseActivity implements LifecycleOwner {
         setViewModel();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+    }
+
     private void setViewModel() {
         mainViewModel = createViewModel();
         Log.e(TAG, "setViewModel: ");
+
+        subscribeDataStreams(mainViewModel);
 
 
     }
@@ -45,12 +63,24 @@ public class MainActivity extends BaseActivity implements LifecycleOwner {
                 .get(MainViewModel.class);
     }
 
+    private void subscribeDataStreams(MainViewModel mainViewModel) {
+        mainViewModel.getObservableProduct().observe(this, new Observer<APIResponse>() {
+            @Override
+            public void onChanged(@Nullable APIResponse product) {
+                Log.e(TAG, "onChanged: ");
+            }
+        });
+    }
+
+
+
     private void setupActionButton() {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                mainViewModel.clickActionButton();
             }
         });
     }

@@ -2,7 +2,7 @@ package com.saidul.mvvpwithdagger2rxjavaroomretrofit2.ui.mainView;
 
 import android.arch.lifecycle.ViewModelProvider;
 
-import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.repo.MainRepository;
+import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.repo.RepositoryManager;
 
 import javax.inject.Inject;
 
@@ -13,10 +13,10 @@ import javax.inject.Inject;
  */
 public  class MainModelFactory implements ViewModelProvider.Factory {
 
-    private final MainRepository useCase;
+    private final RepositoryManager useCase;
 
     @Inject
-    public MainModelFactory(MainRepository useCase) {
+    public MainModelFactory(RepositoryManager useCase) {
         this.useCase = useCase;
     }
 
