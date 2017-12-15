@@ -19,7 +19,7 @@ public class MainViewModel extends ViewModel {
     private static final String TAG = MainViewModel.class.getName();
     private RepositoryManager repository;
 
-   public MutableLiveData<APIResponse> apiRespose;
+   public MutableLiveData<APIResponse> apiRespose= new MutableLiveData<>();;
 
 
     public MainViewModel() {
@@ -46,9 +46,9 @@ public class MainViewModel extends ViewModel {
 
 
     public LiveData<APIResponse> getApiRespose() {
-        if (this.apiRespose == null) {
-            this.apiRespose = new MutableLiveData<>();
-        }
+
         return this.apiRespose;
+
+
     }
 }

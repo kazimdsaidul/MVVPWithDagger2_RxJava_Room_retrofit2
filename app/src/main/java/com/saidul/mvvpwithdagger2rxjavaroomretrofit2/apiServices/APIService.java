@@ -3,9 +3,12 @@ package com.saidul.mvvpwithdagger2rxjavaroomretrofit2.apiServices;
 
 
 
+
+
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.apiServices.model.APIResponse;
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.apiServices.model.RequestBody;
 
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -16,5 +19,5 @@ import retrofit2.http.POST;
 
 public interface APIService {
     @POST("webservice/")
-    Call<APIResponse> getPosts(@Body RequestBody requestBody);
+    Observable<APIResponse> getPosts(@Body RequestBody requestBody);
 }

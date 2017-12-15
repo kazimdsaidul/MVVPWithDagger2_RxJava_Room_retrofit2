@@ -1,9 +1,12 @@
 package com.saidul.mvvpwithdagger2rxjavaroomretrofit2.repo;
 
+
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.database.Observable;
 import android.util.Log;
 
+import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.R;
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.apiServices.APIConstant;
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.apiServices.APIService;
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.apiServices.model.APIResponse;
@@ -11,11 +14,9 @@ import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.apiServices.model.Body;
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.apiServices.model.RequestBody;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
 /**
@@ -31,7 +32,7 @@ public class RepositoryManager implements Repository {
 
     private Retrofit retrofit;
 
-    MutableLiveData<APIResponse> data = new MutableLiveData<>();
+    final MutableLiveData<APIResponse> data = new MutableLiveData<>();
 
     @Inject
     public RepositoryManager(Retrofit retrofit) {
@@ -56,21 +57,25 @@ public class RepositoryManager implements Repository {
         requestBody.setBody(body);
 
 
-        APIService apiService = retrofit.create(APIService.class);
 
-        apiService.getPosts(requestBody).enqueue(new Callback<APIResponse>() {
-            @Override
-            public void onResponse(Call<APIResponse> call, Response<APIResponse> response) {
+        // start http calling
 
-                data.setValue(response.body());
-            }
+        retrofit.create(APIService.class).getPosts(requestBody)
+                .subscribeOn(Schedulers.io())
+                // Be notified on the main thread
+                .observeOn(AndroidSchedulers.mainThread())
+                          .subscribe(this::handleResults, this::handleError);
 
-            @Override
-            public void onFailure(Call<APIResponse> call, Throwable t) {
 
-            }
-        });
 
         return data;
+    }
+
+    private void handleError(Throwable throwable) {
+        Log.e(TAG, "handleError: ");
+    }
+
+    private void handleResults(APIResponse respose) {
+        Log.e(TAG, "handleResults: ");
     }
 }
