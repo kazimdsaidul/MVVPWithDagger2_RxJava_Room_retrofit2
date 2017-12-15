@@ -6,31 +6,31 @@ import android.arch.lifecycle.ViewModel;
 import android.util.Log;
 
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.apiServices.model.APIResponse;
+import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.repo.Repository;
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.repo.RepositoryManager;
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.application.AppController;
 
 import javax.inject.Inject;
 
+import retrofit2.Response;
+
 
 public class MainViewModel extends ViewModel {
     private static final String TAG = MainViewModel.class.getName();
-    private RepositoryManager repositoryManager;
+    private RepositoryManager repository;
 
-    MutableLiveData<APIResponse> apiRespose = new MutableLiveData<>();
+   public MutableLiveData<APIResponse> apiRespose;
 
 
     public MainViewModel() {
         this(null);
-        AppController.getComponent().inject(this);
-
-
         Log.e(TAG, "MainViewModel: ");
 
     }
 
     @Inject
     public MainViewModel(RepositoryManager repositoryManager) {
-        this.repositoryManager = repositoryManager;
+        this.repository = repositoryManager;
         Log.e(TAG, "MainViewModel: ");
 
     }
@@ -38,12 +38,17 @@ public class MainViewModel extends ViewModel {
 
     public void clickActionButton() {
 
-        //repositoryManager.callApi();
-       apiRespose.setValue(new APIResponse());
+
+        apiRespose.setValue(repository.callApi().getValue());
+        Log.e(TAG, "clickActionButton: ");
+
     }
 
 
-    public LiveData<APIResponse> getObservableProduct() {
-        return apiRespose;
+    public LiveData<APIResponse> getApiRespose() {
+        if (this.apiRespose == null) {
+            this.apiRespose = new MutableLiveData<>();
+        }
+        return this.apiRespose;
     }
 }

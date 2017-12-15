@@ -1,5 +1,7 @@
 package com.saidul.mvvpwithdagger2rxjavaroomretrofit2.repo;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
 
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.apiServices.APIConstant;
@@ -9,6 +11,7 @@ import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.apiServices.model.Body;
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.apiServices.model.RequestBody;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,23 +23,26 @@ import retrofit2.Retrofit;
  * company Ltd
  * example@gmail.com
  */
-public class RepositoryManager implements  Repository {
+
+
+public class RepositoryManager implements Repository {
 
     private static final String TAG = RepositoryManager.class.getName();
 
     private Retrofit retrofit;
 
-    @Inject
-    public RepositoryManager(Retrofit retrofit){
+    MutableLiveData<APIResponse> data = new MutableLiveData<>();
 
+    @Inject
+    public RepositoryManager(Retrofit retrofit) {
         this.retrofit = retrofit;
     }
 
 
     @Override
-    public void callApi() {
+    public LiveData<APIResponse> callApi() {
 
-        Body body = new Body();
+        final Body body = new Body();
         body.setFrom("INR");
         body.setTo("LKR");
         body.setAmount("10");
@@ -50,16 +56,21 @@ public class RepositoryManager implements  Repository {
         requestBody.setBody(body);
 
 
-        retrofit.create(APIService.class).getPosts(requestBody).enqueue(new Callback<APIResponse>() {
+        APIService apiService = retrofit.create(APIService.class);
+
+        apiService.getPosts(requestBody).enqueue(new Callback<APIResponse>() {
             @Override
             public void onResponse(Call<APIResponse> call, Response<APIResponse> response) {
-                Log.e(TAG, "onResponse: ");
+
+                data.setValue(response.body());
             }
 
             @Override
             public void onFailure(Call<APIResponse> call, Throwable t) {
-                Log.e(TAG, "onFailure: ");
+
             }
         });
+
+        return data;
     }
 }

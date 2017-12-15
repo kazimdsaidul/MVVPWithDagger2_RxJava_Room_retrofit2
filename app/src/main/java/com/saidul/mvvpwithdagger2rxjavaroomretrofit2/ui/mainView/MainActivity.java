@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.R;
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.apiServices.model.APIResponse;
@@ -34,7 +35,12 @@ public class MainActivity extends BaseActivity implements LifecycleOwner {
 
         setToolbar();
         setupActionButton();
+
         setViewModel();
+
+        //mainViewModel.clickActionButton();
+
+
     }
 
     @Override
@@ -55,7 +61,6 @@ public class MainActivity extends BaseActivity implements LifecycleOwner {
 
         subscribeDataStreams(mainViewModel);
 
-
     }
 
     MainViewModel createViewModel() {
@@ -64,14 +69,17 @@ public class MainActivity extends BaseActivity implements LifecycleOwner {
     }
 
     private void subscribeDataStreams(MainViewModel mainViewModel) {
-        mainViewModel.getObservableProduct().observe(this, new Observer<APIResponse>() {
+        mainViewModel.getApiRespose().observe(this, new Observer<APIResponse>() {
             @Override
             public void onChanged(@Nullable APIResponse product) {
                 Log.e(TAG, "onChanged: ");
+
+                if (product != null) {
+                    Toast.makeText(getApplicationContext(), "" + product.getRate(), Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
-
 
 
     private void setupActionButton() {
@@ -79,6 +87,7 @@ public class MainActivity extends BaseActivity implements LifecycleOwner {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
 
                 mainViewModel.clickActionButton();
             }
