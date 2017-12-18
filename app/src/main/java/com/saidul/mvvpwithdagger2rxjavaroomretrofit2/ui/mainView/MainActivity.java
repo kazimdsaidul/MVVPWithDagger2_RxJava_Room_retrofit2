@@ -38,7 +38,7 @@ public class MainActivity extends BaseActivity implements LifecycleOwner {
 
         setViewModel();
 
-        //mainViewModel.clickActionButton();
+
 
 
     }
@@ -69,16 +69,22 @@ public class MainActivity extends BaseActivity implements LifecycleOwner {
     }
 
     private void subscribeDataStreams(MainViewModel mainViewModel) {
-        mainViewModel.getApiRespose().observe(this, new Observer<APIResponse>() {
-            @Override
-            public void onChanged(@Nullable APIResponse product) {
-                Log.e(TAG, "onChanged: ");
-
-                if (product != null) {
-                    Toast.makeText(getApplicationContext(), "" + product.getRate(), Toast.LENGTH_LONG).show();
-                }
+        mainViewModel.getApiRespose().observe(this, apiResponse -> {
+            Log.e(TAG, "onChanged: ");
+            if (apiResponse.getError() != null) {
+                handleError(apiResponse.getError());
+            } else {
+                handleResponse(apiResponse);
             }
         });
+    }
+
+    private void handleResponse(APIResponse apiResponse) {
+        Toast.makeText(getApplicationContext(), ""+apiResponse.getRate(), Toast.LENGTH_LONG).show();
+    }
+
+    private void handleError(Throwable error) {
+        Toast.makeText(getApplicationContext(), ""+error, Toast.LENGTH_LONG).show();
     }
 
 

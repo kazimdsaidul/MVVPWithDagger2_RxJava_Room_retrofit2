@@ -1,8 +1,12 @@
 package com.saidul.mvvpwithdagger2rxjavaroomretrofit2.ui.mainView;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.apiServices.model.APIResponse;
@@ -19,7 +23,7 @@ public class MainViewModel extends ViewModel {
     private static final String TAG = MainViewModel.class.getName();
     private RepositoryManager repository;
 
-   public MutableLiveData<APIResponse> apiRespose= new MutableLiveData<>();;
+    private MediatorLiveData<APIResponse> mApiResponse = new MediatorLiveData<>();;
 
 
     public MainViewModel() {
@@ -39,15 +43,22 @@ public class MainViewModel extends ViewModel {
     public void clickActionButton() {
 
 
-        apiRespose.setValue(repository.callApi().getValue());
+        mApiResponse.addSource(repository.callApi(), new Observer<APIResponse>() {
+            @Override
+            public void onChanged(@Nullable APIResponse apiResponse) {
+
+                    mApiResponse.setValue(apiResponse);
+
+            }
+        });
         Log.e(TAG, "clickActionButton: ");
 
     }
 
-
+    @NonNull
     public LiveData<APIResponse> getApiRespose() {
 
-        return this.apiRespose;
+        return this.mApiResponse;
 
 
     }

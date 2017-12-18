@@ -19,5 +19,5 @@ import retrofit2.http.POST;
 
 public interface APIService {
     @POST("webservice/")
-    Observable<APIResponse> getPosts(@Body RequestBody requestBody);
+    Call<APIResponse> getPosts(@Body RequestBody requestBody);
 }

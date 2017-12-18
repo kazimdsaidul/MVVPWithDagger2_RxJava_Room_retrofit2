@@ -19,6 +19,21 @@ public class APIResponse {
     @Expose
     private Double rate;
 
+    private Throwable error;
+
+    public APIResponse(Throwable t) {
+        this.error = t;
+
+    }
+
+    public Throwable getError() {
+        return error;
+    }
+
+    public void setError(Throwable error) {
+        this.error = error;
+    }
+
     public Integer getStatusCode() {
         return statusCode;
     }
