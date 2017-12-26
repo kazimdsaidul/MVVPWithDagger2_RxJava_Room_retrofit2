@@ -12,9 +12,10 @@ public class APIResponse {
     @SerializedName("status_code")
     @Expose
     private Integer statusCode;
+
     @SerializedName("result")
-    @Expose
     private Double result;
+
     @SerializedName("rate")
     @Expose
     private Double rate;

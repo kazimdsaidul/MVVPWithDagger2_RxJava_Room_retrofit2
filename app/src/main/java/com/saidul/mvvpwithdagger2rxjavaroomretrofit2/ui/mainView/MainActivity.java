@@ -32,14 +32,10 @@ public class MainActivity extends BaseActivity implements LifecycleOwner {
         setContentView(R.layout.activity_main);
 
         getActivityComponent().inject(this);
-
         setToolbar();
         setupActionButton();
-
         setViewModel();
-
-
-
+        subscribeDataStreams(mainViewModel);
 
     }
 
@@ -58,8 +54,6 @@ public class MainActivity extends BaseActivity implements LifecycleOwner {
     private void setViewModel() {
         mainViewModel = createViewModel();
         Log.e(TAG, "setViewModel: ");
-
-        subscribeDataStreams(mainViewModel);
 
     }
 

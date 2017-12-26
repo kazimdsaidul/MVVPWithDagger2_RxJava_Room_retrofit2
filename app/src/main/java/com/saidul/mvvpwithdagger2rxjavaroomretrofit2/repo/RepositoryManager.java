@@ -6,6 +6,8 @@ import android.arch.lifecycle.MutableLiveData;
 import android.database.Observable;
 import android.util.Log;
 
+import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.Example;
+import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.ExampleDeserializer;
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.R;
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.apiServices.APIConstant;
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.apiServices.APIService;
@@ -15,12 +17,12 @@ import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.apiServices.model.RequestBo
 
 import javax.inject.Inject;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+
 
 /**
  * Created by Name name on 12/14/2017.
@@ -47,17 +49,22 @@ public class RepositoryManager implements Repository {
     public LiveData<APIResponse> callApi() {
 
         final Body body = new Body();
-//        body.setFrom("INR");
-//        body.setTo("LKR");
-//        body.setAmount("10");
+        body.setFrom("INR");
+        body.setTo("LKR");
+        body.setAmount("10");
 
         // make a request body
         final RequestBody requestBody = new RequestBody();
-        requestBody.setClientId(APIConstant.CLIENT_ID);
+        requestBody.setClientId("");
         requestBody.setApiKey(APIConstant.API_KEY);
         requestBody.setAppId(APIConstant.APP_ID);
         requestBody.setMethod(APIConstant.METHOD);
         requestBody.setBody(body);
+
+
+
+
+
 
 
         final MutableLiveData<APIResponse> liveData = new MutableLiveData<>();
@@ -65,12 +72,12 @@ public class RepositoryManager implements Repository {
         retrofit.create(APIService.class).getPosts(requestBody).enqueue(new Callback<APIResponse>() {
             @Override
             public void onResponse(Call<APIResponse> call, Response<APIResponse> response) {
-                liveData.setValue(response.body());
+                Log.e(TAG, "onResponse: ");
             }
 
             @Override
             public void onFailure(Call<APIResponse> call, Throwable t) {
-                liveData.setValue(new APIResponse(t));
+                Log.e(TAG, "onFailure: ");
             }
         });
 

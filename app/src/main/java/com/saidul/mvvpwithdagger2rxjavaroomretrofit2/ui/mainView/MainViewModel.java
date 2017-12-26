@@ -43,13 +43,11 @@ public class MainViewModel extends ViewModel {
     public void clickActionButton() {
 
 
-        mApiResponse.addSource(repository.callApi(), new Observer<APIResponse>() {
-            @Override
-            public void onChanged(@Nullable APIResponse apiResponse) {
+        mApiResponse.addSource(repository.callApi(), apiResponse -> {
+            mApiResponse.setValue(apiResponse);
 
-                    mApiResponse.setValue(apiResponse);
 
-            }
+
         });
         Log.e(TAG, "clickActionButton: ");
 
