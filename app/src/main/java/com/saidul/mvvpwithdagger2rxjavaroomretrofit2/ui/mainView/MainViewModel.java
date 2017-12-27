@@ -40,7 +40,7 @@ public class MainViewModel extends ViewModel {
     }
 
 
-    public void clickActionButton() {
+    public void getData() {
 
 
         mApiResponse.addSource(repository.callApi(), apiResponse -> {
@@ -49,7 +49,7 @@ public class MainViewModel extends ViewModel {
 
 
         });
-        Log.e(TAG, "clickActionButton: ");
+        Log.e(TAG, "getData: ");
 
     }
 

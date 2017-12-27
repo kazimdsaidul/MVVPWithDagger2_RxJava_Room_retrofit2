@@ -1,5 +1,6 @@
 package com.saidul.mvvpwithdagger2rxjavaroomretrofit2.base;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -23,6 +24,7 @@ public class BaseActivity extends AppCompatActivity {
 
     @Inject
     MainModelFactory mainModelFactory;
+    private ProgressDialog progDailog;
 
 
     @Override
@@ -33,14 +35,34 @@ public class BaseActivity extends AppCompatActivity {
                 .applicationComponent((AppController.getComponent()))
                 .build();
 
-
-
-
-
+        progDailog = new ProgressDialog(this);
 
     }
 
+
+
+
     public ActivityComponent getActivityComponent() {
         return mActivityComponent;
+    }
+
+    public void showProgressBar(){
+        if (progDailog!=null){
+            progDailog.setMessage("Please wait...");
+            progDailog.show();
+        }
+    }
+
+    public void hiddenProgressDialog(){
+        if (progDailog!=null){
+            progDailog.dismiss();
+        }
+    }
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        if ( progDailog!=null && progDailog.isShowing() ){
+            progDailog.cancel();
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.saidul.mvvpwithdagger2rxjavaroomretrofit2.ui.mainView;
 
+import android.app.ProgressDialog;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -18,13 +19,16 @@ import javax.inject.Inject;
 
 import io.reactivex.annotations.Nullable;
 
-public class MainActivity extends BaseActivity implements LifecycleOwner {
+public class MainActivity extends BaseActivity implements LifecycleOwner, MainViewController{
 
     private static final String TAG = MainActivity.class.getName();
-    MainViewModel mainViewModel;
+
 
     @Inject
     MainModelFactory mainModelFactory;
+
+    MainPresenter mainPresenter;
+    private ProgressDialog progDailog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,52 +39,20 @@ public class MainActivity extends BaseActivity implements LifecycleOwner {
         setToolbar();
         setupActionButton();
         setViewModel();
-        subscribeDataStreams(mainViewModel);
 
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
 
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
 
     }
 
     private void setViewModel() {
-        mainViewModel = createViewModel();
-        Log.e(TAG, "setViewModel: ");
-
+        MainViewModel viewModel = createViewModel();
+        mainPresenter = new MainPresenter(this, viewModel);
     }
 
     MainViewModel createViewModel() {
-        return ViewModelProviders.of(this, mainModelFactory)
-                .get(MainViewModel.class);
+        return ViewModelProviders.of(this, mainModelFactory).get(MainViewModel.class);
     }
-
-    private void subscribeDataStreams(MainViewModel mainViewModel) {
-        mainViewModel.getApiRespose().observe(this, apiResponse -> {
-            Log.e(TAG, "onChanged: ");
-            if (apiResponse.getError() != null) {
-                handleError(apiResponse.getError());
-            } else {
-                handleResponse(apiResponse);
-            }
-        });
-    }
-
-    private void handleResponse(APIResponse apiResponse) {
-        Toast.makeText(getApplicationContext(), ""+apiResponse.getRate(), Toast.LENGTH_LONG).show();
-    }
-
-    private void handleError(Throwable error) {
-        Toast.makeText(getApplicationContext(), ""+error, Toast.LENGTH_LONG).show();
-    }
-
 
     private void setupActionButton() {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -88,8 +60,8 @@ public class MainActivity extends BaseActivity implements LifecycleOwner {
             @Override
             public void onClick(View view) {
 
+               mainPresenter.clickActionButton();
 
-                mainViewModel.clickActionButton();
             }
         });
     }
@@ -100,4 +72,29 @@ public class MainActivity extends BaseActivity implements LifecycleOwner {
     }
 
 
+    @Override
+    public void showError() {
+        Toast.makeText(getApplicationContext(), "showError", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showapAPIResponse(APIResponse apiResponse) {
+        Toast.makeText(getApplicationContext(), ""+apiResponse.getRate(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void noDataFound() {
+        Toast.makeText(getApplicationContext(), "No Data found", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showProcessBar() {
+        showProgressBar();
+    }
+
+    @Override
+    public void hiddenProcessBar() {
+        hiddenProgressDialog();
+
+    }
 }

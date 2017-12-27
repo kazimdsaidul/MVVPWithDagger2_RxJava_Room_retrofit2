@@ -55,15 +55,11 @@ public class RepositoryManager implements Repository {
 
         // make a request body
         final RequestBody requestBody = new RequestBody();
-        requestBody.setClientId("");
+        requestBody.setClientId(APIConstant.CLIENT_ID);
         requestBody.setApiKey(APIConstant.API_KEY);
         requestBody.setAppId(APIConstant.APP_ID);
         requestBody.setMethod(APIConstant.METHOD);
         requestBody.setBody(body);
-
-
-
-
 
 
 
@@ -73,11 +69,13 @@ public class RepositoryManager implements Repository {
             @Override
             public void onResponse(Call<APIResponse> call, Response<APIResponse> response) {
                 Log.e(TAG, "onResponse: ");
+                liveData.setValue(response.body());
             }
 
             @Override
             public void onFailure(Call<APIResponse> call, Throwable t) {
                 Log.e(TAG, "onFailure: ");
+                liveData.setValue(null);
             }
         });
 
