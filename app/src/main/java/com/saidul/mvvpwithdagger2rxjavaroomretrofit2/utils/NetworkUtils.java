@@ -13,25 +13,26 @@
  * limitations under the License
  */
 
-package com.saidul.mvvpwithdagger2rxjavaroomretrofit2.di.component;
+package com.saidul.mvvpwithdagger2rxjavaroomretrofit2.utils;
 
-
-
-
-import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.ui.mainView.ui.MainActivity;
-import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.di.PerActivity;
-import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.di.module.ActivityModule;
-
-import dagger.Component;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 /**
  * Created by janisharali on 27/01/17.
  */
 
-@PerActivity
-@Component(dependencies = ApplicationComponent.class, modules = {ActivityModule.class})
-public interface ActivityComponent {
+public final class NetworkUtils {
 
-    void inject(MainActivity activity);
+    private NetworkUtils() {
+        // This utility class is not publicly instantiable
+    }
 
+    public static boolean isNetworkConnected(Context context) {
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    }
 }

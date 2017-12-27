@@ -1,4 +1,4 @@
-package com.saidul.mvvpwithdagger2rxjavaroomretrofit2.ui.mainView;
+package com.saidul.mvvpwithdagger2rxjavaroomretrofit2.ui.mainView.presenter;
 
 import android.arch.lifecycle.Observer;
 import android.support.annotation.Nullable;
@@ -7,7 +7,10 @@ import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.apiServices.APIConstant;
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.apiServices.model.APIResponse;
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.apiServices.model.Body;
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.apiServices.model.RequestBody;
+import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.repo.Repository;
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.repo.RepositoryManager;
+import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.ui.mainView.view.MainMVPViewController;
+import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.ui.mainView.viewmodel.MainViewModel;
 
 /**
  * Created by Name name on 12/26/2017.
@@ -17,10 +20,10 @@ import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.repo.RepositoryManager;
 public class MainPresenter {
 
     MainViewModel mainViewModel;
-    RepositoryManager repository;
-    MainViewController mainViewController;
+    Repository repository;
+    MainMVPViewController mainViewController;
 
-    public MainPresenter(MainViewController mainViewController, MainViewModel mainViewModel, RepositoryManager repository ) {
+    public MainPresenter(MainMVPViewController mainViewController, MainViewModel mainViewModel, RepositoryManager repository) {
         this.mainViewController = mainViewController;
         this.mainViewModel = mainViewModel;
         this.repository = repository;
@@ -29,14 +32,14 @@ public class MainPresenter {
 
     }
 
-    private void resetData(MainViewController mainViewController, MainViewModel mainViewModel) {
-        if (this.mainViewModel.mApiResponse!=null){
+    private void resetData(MainMVPViewController mainViewController, MainViewModel mainViewModel) {
+        if (this.mainViewModel.mApiResponse != null) {
             mainViewController.resetData(mainViewModel.mApiResponse);
         }
     }
 
     public void clickActionButton() {
-        mainViewController.showProcessBar();
+        mainViewController.showLoading();
 
         final Body body = new Body();
         body.setFrom("INR");
@@ -52,20 +55,19 @@ public class MainPresenter {
         requestBody.setBody(body);
 
 
-           repository.callCurrencyConverterAPI(requestBody).observe(this.mainViewController, new Observer<APIResponse>() {
-               @Override
-               public void onChanged(@Nullable APIResponse apiResponse) {
-                   if (apiResponse!=null){
+        repository.callCurrencyConverterAPI(requestBody).observe(this.mainViewController, new Observer<APIResponse>() {
+            @Override
+            public void onChanged(@Nullable APIResponse apiResponse) {
+                if (apiResponse != null) {
+                    mainViewController.showAPIRespose(apiResponse);
+                    mainViewModel.mApiResponse = apiResponse;
 
-                       mainViewController.showapAPIResponse(apiResponse);
-                       mainViewModel.mApiResponse = apiResponse;
-
-                   }else {
-                       mainViewController.showError();
-                   }
-                   mainViewController.hiddenProcessBar();
-               }
-           });
+                } else {
+                    mainViewController.onError("on error");
+                }
+                mainViewController.hideLoading();
+            }
+        });
 
 
     }

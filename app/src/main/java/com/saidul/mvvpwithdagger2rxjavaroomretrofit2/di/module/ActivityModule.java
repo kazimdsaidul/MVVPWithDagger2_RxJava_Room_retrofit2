@@ -57,11 +57,7 @@ public class ActivityModule {
         return new RepositoryManager(retrofit);
     }
 
-//    @Provides
-//    @ActivityContext
-//    MainModelFactory provoiderMainModelFactory(RepositoryManager repositoryManager){
-//        return new MainModelFactory(repositoryManager);
-//    }
+
 
 
 
