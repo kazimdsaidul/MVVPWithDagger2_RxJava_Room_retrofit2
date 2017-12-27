@@ -21,7 +21,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.repo.RepositoryManager;
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.di.ActivityContext;
-import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.ui.mainView.MainModelFactory;
 
 import dagger.Module;
 import dagger.Provides;
@@ -58,11 +57,11 @@ public class ActivityModule {
         return new RepositoryManager(retrofit);
     }
 
-    @Provides
-    @ActivityContext
-    MainModelFactory provoiderMainModelFactory(RepositoryManager repositoryManager){
-        return new MainModelFactory(repositoryManager);
-    }
+//    @Provides
+//    @ActivityContext
+//    MainModelFactory provoiderMainModelFactory(RepositoryManager repositoryManager){
+//        return new MainModelFactory(repositoryManager);
+//    }
 
 
 

@@ -21,43 +21,9 @@ import retrofit2.Response;
 
 public class MainViewModel extends ViewModel {
     private static final String TAG = MainViewModel.class.getName();
-    private RepositoryManager repository;
-
-    private MediatorLiveData<APIResponse> mApiResponse = new MediatorLiveData<>();;
 
 
-    public MainViewModel() {
-        this(null);
-        Log.e(TAG, "MainViewModel: ");
-
-    }
-
-    @Inject
-    public MainViewModel(RepositoryManager repositoryManager) {
-        this.repository = repositoryManager;
-        Log.e(TAG, "MainViewModel: ");
-
-    }
+    APIResponse mApiResponse;
 
 
-    public void getData() {
-
-
-        mApiResponse.addSource(repository.callApi(), apiResponse -> {
-            mApiResponse.setValue(apiResponse);
-
-
-
-        });
-        Log.e(TAG, "getData: ");
-
-    }
-
-    @NonNull
-    public LiveData<APIResponse> getApiRespose() {
-
-        return this.mApiResponse;
-
-
-    }
 }

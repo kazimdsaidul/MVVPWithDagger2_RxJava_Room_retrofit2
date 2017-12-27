@@ -8,7 +8,6 @@ import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.application.AppController;
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.di.component.ActivityComponent;
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.di.component.DaggerActivityComponent;
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.di.module.ActivityModule;
-import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.ui.mainView.MainModelFactory;
 
 import javax.inject.Inject;
 
@@ -22,8 +21,7 @@ public class BaseActivity extends AppCompatActivity {
 
     public ActivityComponent mActivityComponent;
 
-    @Inject
-    MainModelFactory mainModelFactory;
+
     private ProgressDialog progDailog;
 
 

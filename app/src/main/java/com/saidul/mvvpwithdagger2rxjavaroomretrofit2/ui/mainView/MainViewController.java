@@ -1,6 +1,5 @@
 package com.saidul.mvvpwithdagger2rxjavaroomretrofit2.ui.mainView;
 
-import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.LifecycleOwner;
 
 import com.saidul.mvvpwithdagger2rxjavaroomretrofit2.apiServices.model.APIResponse;
@@ -19,4 +18,6 @@ public interface MainViewController extends LifecycleOwner {
     void showProcessBar();
 
     void hiddenProcessBar();
+
+    void resetData(APIResponse mainViewModel);
 }
