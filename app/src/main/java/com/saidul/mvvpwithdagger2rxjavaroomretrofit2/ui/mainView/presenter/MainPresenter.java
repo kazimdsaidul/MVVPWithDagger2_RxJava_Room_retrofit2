@@ -23,7 +23,7 @@ public class MainPresenter {
     Repository repository;
     MainMVPViewController mainViewController;
 
-    public MainPresenter(MainMVPViewController mainViewController, MainViewModel mainViewModel, RepositoryManager repository) {
+    public MainPresenter(MainMVPViewController mainViewController, MainViewModel mainViewModel, Repository repository) {
         this.mainViewController = mainViewController;
         this.mainViewModel = mainViewModel;
         this.repository = repository;

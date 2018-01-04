@@ -69,10 +69,6 @@ public class MainActivity extends BaseActivity implements LifecycleOwner, MainMV
         setSupportActionBar(toolbar);
     }
 
-
-
-
-
     public ActivityComponent getActivityComponent() {
         return mActivityComponent;
     }
